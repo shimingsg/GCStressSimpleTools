@@ -23,7 +23,7 @@ do
       continue
     fi
   fi
-  if [ ! -e "$dirName/RunTest.sh" ]; then
+  if [ ! -e "$dirName/RunTests.sh" ]; then
     echo "Cannot find $dirName/RunTests.sh"
     continue
   fi
