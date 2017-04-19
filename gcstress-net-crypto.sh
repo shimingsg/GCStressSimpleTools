@@ -10,23 +10,20 @@ CURRENT_RUNTIME="$ProjectRoot/testhost/netcoreapp-Linux-Debug-x64"
 
 echo "PWD : $PWD"
 exitCode=0
-#$ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
-
-
 
 run-tests()
 {
 for testProject in $@
 do
   dirName="$testProject/netcoreapp"
-  if [ ! -d "$dirName"]; then
+  if [ ! -d "$dirName" ]; then
     dirName="$testProject/netstandard"
-    if [ ! -d "$dirName"]; then
-      echo "Nothing to test in $testProject"
+    if [ ! -d "$dirName" ]; then
+      echo "Nothing to test in $dirName"
       continue
     fi
   fi
-  if [ ! -e "$dirName/RunTest.sh"]; then
+  if [ ! -e "$dirName/RunTest.sh" ]; then
     echo "Cannot find $dirName/RunTests.sh"
     continue
   fi
