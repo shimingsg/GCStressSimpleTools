@@ -28,10 +28,11 @@ do
     continue
   fi
   pushd $dirName
+  echo "Current workspace: $dirName"
   echo
   echo "Running tests in $dirName"
   echo "./RunTests.sh $CURRENT_RUNTIME"
-  exitCode=$?
+  ./RunTests.sh $CURRENT_RUNTIME
   popd
 done
 }
