@@ -12,13 +12,7 @@ echo "PWD : $PWD"
 exitCode=0
 #$ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
 
-run-tests $ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
-run-tests $LINUX_ANYCPU_DEBUG/System.Net.*.Tests
-run-tests $UNIX_ANYCPU_DEBUG/System.Net.*.Tests
 
-run-tests $ANYOS_ANYCPU_DEBUG/System.Security.Crypto*.Tests
-run-tests $LINUX_ANYCPU_DEBUG/System.Security.Crypto*.Tests
-run-tests $UNIX_ANYCPU_DEBUG/System.Security.Crypto*.Tests
 
 run-tests()
 {
@@ -44,5 +38,13 @@ do
   popd
 done
 }
+
+run-tests $ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
+run-tests $LINUX_ANYCPU_DEBUG/System.Net.*.Tests
+run-tests $UNIX_ANYCPU_DEBUG/System.Net.*.Tests
+
+run-tests $ANYOS_ANYCPU_DEBUG/System.Security.Crypto*.Tests
+run-tests $LINUX_ANYCPU_DEBUG/System.Security.Crypto*.Tests
+run-tests $UNIX_ANYCPU_DEBUG/System.Security.Crypto*.Tests
 
 exit $exitCode
