@@ -8,22 +8,31 @@ LINUX_ANYCPU_DEBUG="$ProjectRoot/Linux.AnyCPU.Debug"
 UNIX_ANYCPU_DEBUG="$ProjectRoot/Unix.AnyCPU.Debug"
 CURRENT_RUNTIME="$ProjectRoot/testhost/netcoreapp-Linux-Debug-x64"
 
-
-pushd $ANYOS_ANYCPU_DEBUG
 echo "PWD : $PWD"
-for testProject in $ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
+exitCode=0
+#$ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
+
+run-tests $ANYOS_ANYCPU_DEBUG/System.Net.*.Tests
+run-tests $LINUX_ANYCPU_DEBUG/System.Net.*.Tests
+run-tests $UNIX_ANYCPU_DEBUG/System.Net.*.Tests
+
+run-tests $ANYOS_ANYCPU_DEBUG/System.Security.Crypto*.Tests
+run-tests $LINUX_ANYCPU_DEBUG/System.Security.Crypto*.Tests
+run-tests $UNIX_ANYCPU_DEBUG/System.Security.Crypto*.Tests
+
+run-tests()
+{
+for testProject in $@
 do
   dirName="$testProject/netcoreapp"
-
-  if [! -d "$dirName"]; then
+  if [ ! -d "$dirName"]; then
     dirName="$testProject/netstandard"
-    if [! -d "$dirName"]; then
+    if [ ! -d "$dirName"]; then
       echo "Nothing to test in $testProject"
       continue
     fi
   fi
-
-  if [! -e "$dirName/RunTest.sh"]; then
+  if [ ! -e "$dirName/RunTest.sh"]; then
     echo "Cannot find $dirName/RunTests.sh"
     continue
   fi
@@ -33,7 +42,7 @@ do
   echo "./RunTests.sh $CURRENT_RUNTIME"
   exitCode=$?
   popd
-
 done
+}
 
 exit $exitCode
