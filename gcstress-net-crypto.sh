@@ -2,13 +2,13 @@
 # GC stress for NETWORKING and CRYPTO
 
 ProjectRoot="$PWD/corefx/bin"
-echo project executing path: $ProjectRoot
+#echo project executing path: $ProjectRoot
 ANYOS_ANYCPU_DEBUG="$ProjectRoot/AnyOS.AnyCPU.Debug"
 LINUX_ANYCPU_DEBUG="$ProjectRoot/Linux.AnyCPU.Debug"
 UNIX_ANYCPU_DEBUG="$ProjectRoot/Unix.AnyCPU.Debug"
-CURRENT_RUNTIME="$ProjectRoot/testhost/netcoreapp-Linux-Debug-x64"
+TESTHOST_RUNTIME="$ProjectRoot/testhost/netcoreapp-Linux-Debug-x64"
 
-echo "PWD : $PWD"
+
 exitCode=0
 
 run-tests()
@@ -31,8 +31,13 @@ do
   echo "Current workspace: $dirName"
   echo
   echo "Running tests in $dirName"
-  echo "./RunTests.sh $CURRENT_RUNTIME"
-  ./RunTests.sh $CURRENT_RUNTIME
+  echo "./RunTests.sh $TESTHOST_RUNTIME"
+  ./RunTests.sh $TESTHOST_RUNTIME
+  exitCode=$?
+  if [ $exitCode -ne 0 ]
+  then
+      echo "error: One or more tests failed while running tests from '$dirName/RunTests.sh'.  Exit code $exitCode."
+  fi
   popd
 done
 }
