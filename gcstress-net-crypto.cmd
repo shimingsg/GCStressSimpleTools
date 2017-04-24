@@ -83,6 +83,35 @@ FOR /D %%F IN (System.Net.*.Tests) DO (
 	)
 )
 
+FOR /D %%F IN (System.Console.Tests) DO (
+	IF EXIST %%F\netcoreapp (
+		pushd %%F\netcoreapp
+                @echo Looking in %cd%...
+		IF EXIST RunTests.cmd (
+                        @echo ... found tests
+			CALL RunTests.cmd %TESTHOST_PATH%
+			IF %ERRORLEVEL% neq 0 (
+				set exitCode=%ERRORLEVEL%
+				@echo "error: One or more tests failed while running tests from '%%F\netcoreapp'.  Exit code %exitCode%."
+			)
+		)
+		popd
+	)
+	IF EXIST %%F\netstandard (
+		pushd %%F\netstandard
+                @echo Looking in %cd%...
+		IF EXIST RunTests.cmd (
+                        @echo ... found tests
+			CALL RunTests.cmd %TESTHOST_PATH%
+			IF %ERRORLEVEL% neq 0 (
+				set exitCode=%ERRORLEVEL%
+				@echo "error: One or more tests failed while running tests from '%%F\netstandard'.  Exit code %exitCode%."
+			)
+		)
+		popd
+	)
+)
+
 popd
 
 goto :EOF
