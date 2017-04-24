@@ -5,15 +5,17 @@ set ANYOS_ANYCPU_DEBUG_LOCATION=%~dp0\corefx\bin\AnyOS.AnyCPU.Debug
 set WINDOWS_NT_ANYCPU_DEBUG_LOCATION=%~dp0\corefx\bin\Windows_NT.AnyCPU.Debug
 set TESTHOST_PATH=%~dp0\corefx\bin\testhost\netcoreapp-Windows_NT-Debug-x64
 
-@echo STRESSLEVEL : %TestGCStressLevel%
-@echo STRESSMODE : %COMPlus_GCStress%
+@echo TestGCStressLevel : %TestGCStressLevel%
+@echo COMPlus_GCStress : %COMPlus_GCStress%
 
 set ERRORLEVEL=0
 set exitCode=0
+set errorCount=0
 
 call :RunSpecificLibs %ANYOS_ANYCPU_DEBUG_LOCATION%
 call :RunSpecificLibs %WINDOWS_NT_ANYCPU_DEBUG_LOCATION%
 
+@echo Error Count: %errorCount%
 exit /b %exitCode%
 
 
@@ -32,9 +34,10 @@ FOR /D %%F IN (System.Security.Crypto*.Tests) DO (
 		IF EXIST RunTests.cmd (
                         @echo ... found tests
 			CALL RunTests.cmd %TESTHOST_PATH%
-			IF %ERRORLEVEL% neq 0 (
+			IF NOT %ERRORLEVEL% == 0 (
+				set /a errorCount=%errorCount%+1
 				set exitCode=%ERRORLEVEL%
-				@echo "error: One or more tests failed while running tests from '%%F\netcoreapp'.  Exit code %exitCode%."
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%."
 			)
 		)
 		popd
@@ -45,9 +48,10 @@ FOR /D %%F IN (System.Security.Crypto*.Tests) DO (
 		IF EXIST RunTests.cmd (
                         @echo ... found tests
 			CALL RunTests.cmd %TESTHOST_PATH%
-			IF %ERRORLEVEL% neq 0 (
+			IF NOT %ERRORLEVEL% == 0 (
+				set /a errorCount=%errorCount%+1
 				set exitCode=%ERRORLEVEL%
-				@echo "error: One or more tests failed while running tests from '%%F\netstandard'.  Exit code %exitCode%."
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%."
 			)
 		)
 		popd
@@ -61,9 +65,10 @@ FOR /D %%F IN (System.Net.*.Tests) DO (
 		IF EXIST RunTests.cmd (
                         @echo ... found tests
 			CALL RunTests.cmd %TESTHOST_PATH%
-			IF %ERRORLEVEL% neq 0 (
+			IF NOT %ERRORLEVEL% == 0 (
+				set /a errorCount=%errorCount%+1
 				set exitCode=%ERRORLEVEL%
-				@echo "error: One or more tests failed while running tests from '%%F\netcoreapp'.  Exit code %exitCode%."
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%."
 			)
 		)
 		popd
@@ -74,38 +79,10 @@ FOR /D %%F IN (System.Net.*.Tests) DO (
 		IF EXIST RunTests.cmd (
                         @echo ... found tests
 			CALL RunTests.cmd %TESTHOST_PATH%
-			IF %ERRORLEVEL% neq 0 (
+			IF NOT %ERRORLEVEL% == 0 (
+				set /a errorCount=%errorCount%+1
 				set exitCode=%ERRORLEVEL%
-				@echo "error: One or more tests failed while running tests from '%%F\netstandard'.  Exit code %exitCode%."
-			)
-		)
-		popd
-	)
-)
-
-FOR /D %%F IN (System.Console.Tests) DO (
-	IF EXIST %%F\netcoreapp (
-		pushd %%F\netcoreapp
-                @echo Looking in %cd%...
-		IF EXIST RunTests.cmd (
-                        @echo ... found tests
-			CALL RunTests.cmd %TESTHOST_PATH%
-			IF %ERRORLEVEL% neq 0 (
-				set exitCode=%ERRORLEVEL%
-				@echo "error: One or more tests failed while running tests from '%%F\netcoreapp'.  Exit code %exitCode%."
-			)
-		)
-		popd
-	)
-	IF EXIST %%F\netstandard (
-		pushd %%F\netstandard
-                @echo Looking in %cd%...
-		IF EXIST RunTests.cmd (
-                        @echo ... found tests
-			CALL RunTests.cmd %TESTHOST_PATH%
-			IF %ERRORLEVEL% neq 0 (
-				set exitCode=%ERRORLEVEL%
-				@echo "error: One or more tests failed while running tests from '%%F\netstandard'.  Exit code %exitCode%."
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%."
 			)
 		)
 		popd
