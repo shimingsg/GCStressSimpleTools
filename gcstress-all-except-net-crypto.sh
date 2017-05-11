@@ -13,12 +13,12 @@ run-tests()
 {
   for testProject in $@
   do
-      if [[ ${testProject/${EXCLUDE_NET_TESTS}//} == $testProject ]]; then
-	    echo "Ignore networking tests"
+      if [[ “$testProject” == System.Net.* ]]; then
+	    echo "Ignore networking tests [$testProject]"
 		continue
 	  fi
-      if [[ ${testProject/${EXCLUDE_CRYPTO_TESTS}//} == $testProject ]]; then
-	    echo "Ignore crypto tests"
+      if [[ “$testProject” == System.Security.Crypto* ]]; then
+	    echo "Ignore crypto tests  [$testProject]"
 		continue
 	  fi
       dirName="$testProject/netcoreapp"
