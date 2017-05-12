@@ -34,6 +34,7 @@ run-tests()
       if [ $exitCode -ne 0 ]
       then
           echo "error: One or more tests failed while running tests from '$dirName/RunTests.sh'.  Exit code $exitCode."
+		  echo "error: One or more tests failed while running tests from '$dirName/RunTests.sh'.  Exit code $exitCode." >> gcs-net.log
       fi
       popd
   done

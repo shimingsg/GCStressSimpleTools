@@ -26,18 +26,21 @@ set TARGET_PATH=%~1
 
 pushd %TARGET_PATH%
 
-FOR /D %%F IN (System.Security.Crypto*.Tests) DO (
+FOR /D %%Netfolder in ("System.Net.*.Tests") do rd /s /q "%%~Netfolder"
+FOR /D %%Cryptofolder in ("System.Security.Crypto*.Tests") do rd /s /q "%%~Cryptofolder"
+
+FOR /D %%F IN (*.Tests) DO (
+	
 	IF EXIST %%F\netcoreapp (
 		pushd %%F\netcoreapp
         @echo Looking in %cd%...
 		IF EXIST RunTests.cmd (
-            set /a totalCount=%totalCount%+1
 			@echo ... found tests
 			CALL RunTests.cmd %TESTHOST_PATH%
 			IF NOT %ERRORLEVEL% == 0 (
 				set exitCode=%ERRORLEVEL%
 				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%."
-				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%." >> gcs-crypto.log
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%." >> gcstress-all-except-net.crypto.log
 			)
 		)
 		popd
@@ -46,13 +49,12 @@ FOR /D %%F IN (System.Security.Crypto*.Tests) DO (
 		pushd %%F\netstandard
         @echo Looking in %cd%...
 		IF EXIST RunTests.cmd (
-			set /a totalCount=%totalCount%+1
             @echo ... found tests
 			CALL RunTests.cmd %TESTHOST_PATH%
 			IF NOT %ERRORLEVEL% == 0 (
 				set exitCode=%ERRORLEVEL%
 				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%."
-				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%." >> gcs-crypto.log
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%." >> gcstress-all-except-net.crypto.log
 			)
 		)
 		popd
