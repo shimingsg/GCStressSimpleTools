@@ -5,7 +5,7 @@ set CONFIGURATIONGROUP=Release
 set ANYOS_ANYCPU_DEBUG_LOCATION=%~dp0\corefx\bin\AnyOS.AnyCPU.%CONFIGURATIONGROUP%
 set WINDOWS_NT_ANYCPU_DEBUG_LOCATION=%~dp0\corefx\bin\Windows_NT.AnyCPU.%CONFIGURATIONGROUP%
 set TESTHOST_PATH=%~dp0\corefx\bin\testhost\netcoreapp-Windows_NT-%CONFIGURATIONGROUP%-x64
-set LOG_FILE=%~dp0\gcstress-all-except-net.crypto.log
+set LOG_FILE=%~dp0\gcs-all-except-net.crypto.log
 
 @echo TestGCStressLevel : %TestGCStressLevel%
 @echo COMPlus_GCStress : %COMPlus_GCStress%
