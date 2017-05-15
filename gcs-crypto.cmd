@@ -5,6 +5,7 @@ set CONFIGURATIONGROUP=Release
 set ANYOS_ANYCPU_DEBUG_LOCATION=%~dp0\corefx\bin\AnyOS.AnyCPU.%CONFIGURATIONGROUP%
 set WINDOWS_NT_ANYCPU_DEBUG_LOCATION=%~dp0\corefx\bin\Windows_NT.AnyCPU.%CONFIGURATIONGROUP%
 set TESTHOST_PATH=%~dp0\corefx\bin\testhost\netcoreapp-Windows_NT-%CONFIGURATIONGROUP%-x64
+set LOG_FILE=%~dp0\gcs-crypto.log
 
 @echo TestGCStressLevel : %TestGCStressLevel%
 @echo COMPlus_GCStress : %COMPlus_GCStress%
@@ -37,7 +38,7 @@ FOR /D %%F IN (System.Security.Crypto*.Tests) DO (
 			IF NOT %ERRORLEVEL% == 0 (
 				set exitCode=%ERRORLEVEL%
 				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%."
-				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%." >> gcs-crypto.log
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netcoreapp'.  Exit code %exitCode%." >> %LOG_FILE%
 			)
 		)
 		popd
@@ -52,7 +53,7 @@ FOR /D %%F IN (System.Security.Crypto*.Tests) DO (
 			IF NOT %ERRORLEVEL% == 0 (
 				set exitCode=%ERRORLEVEL%
 				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%."
-				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%." >> gcs-crypto.log
+				@echo "error: One or more tests failed while running tests from '%TARGET_PATH%\%%F\netstandard'.  Exit code %exitCode%." >> %LOG_FILE%
 			)
 		)
 		popd

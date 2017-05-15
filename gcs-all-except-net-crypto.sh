@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+#Linux, OSX
 ConfigurationGroup="Release"
 ProjectRoot="$PWD/corefx/bin"
 ANYOS_ANYCPU_DEBUG="$ProjectRoot/AnyOS.AnyCPU.$ConfigurationGroup"
 LINUX_ANYCPU_DEBUG="$ProjectRoot/Linux.AnyCPU.$ConfigurationGroup"
 UNIX_ANYCPU_DEBUG="$ProjectRoot/Unix.AnyCPU.$ConfigurationGroup"
 TESTHOST_RUNTIME="$ProjectRoot/testhost/netcoreapp-Linux-$ConfigurationGroup-x64"
-
+LOG_FILE="$PWD/gcs-all-except-net-crypto.log"
 exitCode=0
 
 run-tests()
@@ -34,19 +35,14 @@ run-tests()
       if [ $exitCode -ne 0 ]
       then
           echo "error: One or more tests failed while running tests from '$dirName/RunTests.sh'.  Exit code $exitCode."
+		  echo "error: One or more tests failed while running tests from '$dirName/RunTests.sh'.  Exit code $exitCode." >> $LOG_FILE
       fi
       popd
   done
 }
 
-run-tests "$ANYOS_ANYCPU_DEBUG/System.Net.*.Tests"
-run-tests "$LINUX_ANYCPU_DEBUG/System.Net.*.Tests"
-run-tests "$UNIX_ANYCPU_DEBUG/System.Net.*.Tests"
-run-tests "$ANYOS_ANYCPU_DEBUG/System.Security.Crypto*.Tests"
-run-tests "$LINUX_ANYCPU_DEBUG/System.Security.Crypto*.Tests"
-run-tests "$UNIX_ANYCPU_DEBUG/System.Security.Crypto*.Tests"
-run-tests "$ANYOS_ANYCPU_DEBUG/System.Console.Tests"
-run-tests "$LINUX_ANYCPU_DEBUG/System.Console.Tests"
-run-tests "$UNIX_ANYCPU_DEBUG/System.Console.Tests"
+run-tests "$ANYOS_ANYCPU_DEBUG/*.Tests"
+run-tests "$LINUX_ANYCPU_DEBUG/*.Tests"
+run-tests "$UNIX_ANYCPU_DEBUG/*.Tests"
 
 exit $exitCode
